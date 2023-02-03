@@ -4,7 +4,7 @@ input = sys.stdin.readline
 N , M = map(int,input().split())
 data = [int(input()) for _ in range(N)]
 
-answer = 0
+answer = 99223372036854775807
 
 start = 0
 end = max(data) * M
@@ -21,7 +21,7 @@ while(start <= end):
 
     else :
         end = mid - 1
-        answer = mid
+        answer = min(mid,answer)
 
 
 print(answer)

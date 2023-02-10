@@ -29,7 +29,7 @@ def BFS(x):
 Subin, Sister = map(int,input().split())
 graph = []
 visited = []
-for i in range (1000000):
+for i in range (100001):
     graph.append(i)
     visited.append(0)
 

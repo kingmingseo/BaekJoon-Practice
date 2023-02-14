@@ -1,65 +1,64 @@
 import sys
 from collections import deque
-input = sys.stdin.readline
-def BFS(x,y):
+
+
+def is_out_of_range(row, col):
+    if (0 <= row < N) and (0 <= col < M):
+        return False
+    return True
+
+
+def bfs(row, col):
     q = deque()
-    q.append((x,y))
-    visited[x][y] = 1
+    q.append((row, col))
+    checked[row][col] = True
 
-    while q:
-        x,y = q.popleft()
+    while(q):
+        row, col = q.popleft()
+
         for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+            next_row = row + d_row[i]
+            next_col = col + d_col[i]
 
-            if 0 <= nx < N and 0 <= ny < M:
-                if graph[nx][ny] == 0 :
-                    count[x][y] = count[x][y] + 1
+            if is_out_of_range(next_row, next_col) or checked[next_row][next_col]:
+                continue
+            if mount[next_row][next_col] == 0:
+                if mount[row][col] > 0:
+                    mount[row][col] -= 1
+            else:
+                q.append((next_row, next_col))
+                checked[next_row][next_col] = True
+    return
 
-                elif graph[nx][ny] != 0 and visited[nx][ny] == 0:
-                    q.append((nx, ny))
-                    visited[nx][ny] = 1
 
-    return 1
+input = sys.stdin.readline
 
-N , M = map(int,input().split())
+N, M = map(int, input().split())
+mount = [list(map(int, input().split())) for _ in range(N)]
+checked = [[False] * M for _ in range(N)]
+d_row = [0, 0, 1, -1]
+d_col = [1, -1, 0, 0]
 
-graph = []
-dx = [1,0,-1,0]
-dy = [0,1,0,-1]
-answer = 0
+years = 0
 
-button = False
+while(True):
+    mount_count = 0
+    for row in range(N):
+        for col in range(M):
+            if mount[row][col] != 0 and not checked[row][col]:
+                bfs(row, col)
+                mount_count += 1
 
-for _ in range(N):
-    graph.append(list(map(int,input().split())))
-
-while True:
-    result = []
-    visited = [[0] * M for _ in range(N)]
-    count = [[0] * M for _ in range(N)]
-
-    for i in range (N):
-        for j in range (M):
-            if graph[i][j] != 0 and visited[i][j] == 0:
-                result.append(BFS(i,j))
-
-    for i in range (N):
-        for j in range (M):
-            graph[i][j] = graph[i][j] - count[i][j]
-            if graph[i][j] < 0:
-                graph[i][j] = 0
-
-    if len(result) == 0:
-        break
-    elif len(result) >= 2 :
-        button = True
+    if mount_count == 0:
+        years = 0
         break
 
-    answer = answer + 1
+    years += 1
+    if mount_count >= 2:
+        years -= 1
+        break
 
-if button:
-    print(answer)
-else:
-    print(0)
+    checked = [[False] * M for _ in range(N)]
 
+
+print(years)

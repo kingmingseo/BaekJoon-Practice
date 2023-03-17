@@ -1,26 +1,32 @@
-r, c = map(int, input().split())
-graph = [list(input()) for _ in range(r)]
-visited = set()
-dx, dy = (-1, 1, 0, 0), (0, 0, -1, 1)
-ans = 0
+import sys
+input = sys.stdin.readline
+from collections import deque
+data = []
+R, C = map(int,input().split())
+for _ in range (R):
+    data.append(list(input().rstrip()))
+isused = [[False for _ in range(C)] for _ in range(R)]
+dx = (1,0,-1,0)
+dy = (0,-1,0,1)
+
+answer = 0
+def BFS(x,y):
+    global answer
+    arr = set([(x, y, data[x][y])])
+
+    while arr:
+        x, y, ans = arr.pop()
+        answer = max(len(ans), answer)
+
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if 0 <= nx < R and 0 <= ny < C and data[nx][ny] not in ans :
+                arr.add((nx,ny,ans + data[nx][ny]))
 
 
-def dfs(x, y, cnt):
-    global ans
-
-    ans = max(ans, cnt)
-    visited.add(graph[x][y])
-
-    for i in range(4):
-        nx, ny = x + dx[i], y + dy[i]
-
-        if 0 <= nx < r and 0 <= ny < c:
-            if graph[nx][ny] not in visited:
-                dfs(nx, ny, cnt + 1)
-
-    visited.remove(graph[x][y])
 
 
-dfs(0, 0, 1)
-
-print(ans)
+BFS(0,0)
+print(answer)

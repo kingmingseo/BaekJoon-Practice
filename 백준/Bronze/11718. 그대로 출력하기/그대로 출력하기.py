@@ -1,6 +1,8 @@
+import sys
 
 while True:
-    try:
-        print(input())
-    except EOFError:
+    line = sys.stdin.readline().rstrip()
+    if line != "":
+        print(line)
+    else:
         break

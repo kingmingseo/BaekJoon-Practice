@@ -1,29 +1,20 @@
-import sys
+import  sys
 input = sys.stdin.readline
+N, M = map(int, input().split())
+tree = list(map(int, input().split()))
+start, end = 1, max(tree)  # 이분탐색 검색 범위 설정
 
-tree , limit = map(int,input().split())
-data = list(map(int,input().split()))
-data.sort()
-
-start = 0
-end = data[-1]
-
-ans = 0
-while (start <= end):
+while start <= end:  # 적절한 벌목 높이를 찾는 알고리즘
     mid = (start + end) // 2
-    total = 0
 
-    for i in data:
-        if i > mid:
-            total = total + (i - mid)
+    log = 0  # 벌목된 나무 총합
+    for i in tree:
+        if i >= mid:
+            log += i - mid
 
-    if total >= limit : #나무를 가져갈 수 있으면 절단기 한계를 더 높여보는 방향으로
+    # 벌목 높이를 이분탐색
+    if log >= M:
         start = mid + 1
-        ans = max(ans, mid)
-
-    else: # 나무를 가져갈 수 없으면 절단기 한계를 더 낮춰서 나무를 더 가져가는 방향으로
+    else:
         end = mid - 1
-
-
-
-print(ans)
+print(end)

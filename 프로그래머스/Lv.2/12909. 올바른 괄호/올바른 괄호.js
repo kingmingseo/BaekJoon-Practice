@@ -1,10 +1,24 @@
-const solution = (s) => {
-    let result = [];
-    for(let i = 0; i < s.length; i ++){
-        if(s[i] === "(") result.push("(")
-        else 
-            if(result.length === 0) return false;
-            else result.pop();
+function solution(s){
+    var answer = true;
+    let temp = []
+    
+    for(let i = 0; i < s.length; i++){
+        if(s[i]==='('){ 
+            temp.push(s[i]);
+        }
+        else{
+           if(temp.length === 0){
+               return false
+           }
+            else{
+                temp.pop()
+            }
+        }
+        
     }
-    return result.length === 0;
+   if(temp.length !==0){
+            return false;
+    }
+    return answer 
+
 }

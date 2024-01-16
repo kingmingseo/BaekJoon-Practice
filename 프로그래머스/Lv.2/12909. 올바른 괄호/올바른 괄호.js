@@ -1,21 +1,10 @@
-function solution(s){
-    var answer = true;
-    let count = 0
-    
-    for (let i =0; i<s.length; i++){
-        if(s[i] === '('){
-            count++ 
-        }
-        else{
-            count--
-        }
-        if (count<0){
-            return false;
-        }
+const solution = (s) => {
+    let result = [];
+    for(let i = 0; i < s.length; i ++){
+        if(s[i] === "(") result.push("(")
+        else 
+            if(result.length === 0) return false;
+            else result.pop();
     }
-    if (count !== 0 ){
-        return false
-    }
-   
-    return answer;
+    return result.length === 0;
 }

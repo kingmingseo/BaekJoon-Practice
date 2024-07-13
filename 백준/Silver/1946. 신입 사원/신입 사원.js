@@ -3,7 +3,7 @@ let data = [];
 let answer = '';
 
 function compare(a, b) {
-  return Number(a[0]) - Number(b[0]);
+  return (a[0]) - (b[0]);
 }
 
 function calculation(data) {
@@ -30,7 +30,6 @@ for (let i = 0; i < temp.length; i++) {
     } else if (i === temp.length - 1) {
         data.push(nowData);
         data.sort(compare);
-       
         answer += calculation(data) + '\n';
         data = [];
     } else {

@@ -17,6 +17,9 @@ for(let i=0; i< distance.length; i++){
         answer += (cityOilFee[i]*(distance[j]))
         skipValue++;
       }
+      else{
+        break
+      }
     } 
     i += skipValue 
     

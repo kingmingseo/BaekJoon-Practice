@@ -1,31 +1,26 @@
 let [N, M] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ').map(Number);
-let arr = [];
-
-for(let i = 1; i<=N;i++) arr.push(i);
-let visited = new Array(N).fill(false);
+let arr = []
 let selected = [];
+let visited = new Array(N).fill(false);
+let answer = ''
+for (let i=1; i<=N; i++) arr.push(i);
 
-let answer = '';
-function dfs(arr,depth){
+function dfs(depth){
   if(depth === M){
-    let result = [];
-    for(let i of selected) result.push(arr[i]);
-    for(let x of result) answer += x+ " ";
-    answer += '\n'
-    return;
+    for(let item of selected){
+      answer += `${arr[item]} `
+    }
+    answer +='\n'
+    return
   }
-  for(let i =0; i< arr.length; i++){
-    if(visited[i]) continue;
+  for(let i=0; i<arr.length; i++){
+    if(visited[i]) continue
     selected.push(i);
-    visited[i]= true;
-    dfs(arr, depth+1);
-    selected.pop()
-    visited[i] = false;
+    visited[i] = true;
+    dfs(depth+1);
+    selected.pop();
+    visited[i]=false;
   }
 }
-
-dfs(arr,0);
+dfs(0)
 console.log(answer)
-
-
-

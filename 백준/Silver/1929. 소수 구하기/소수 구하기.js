@@ -1,32 +1,23 @@
-const input = (
-  process.platform == "linux"
-    ? require("fs").readFileSync("/dev/stdin").toString()
-    : `3 16`
-)
-  .split(" ")
-  .map(Number);
+let [N, M] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ').map(Number);
 
-const [M, N] = input;
+let arr = new Array(M + 1).fill(true);
+arr[0] = false;
+arr[1] = false;
 
-const isPrimeNumber = new Array(N + 1).fill(true);
-isPrimeNumber[0] = isPrimeNumber[1] = false;
-
-for (let i = 2; i <= Math.ceil(Math.sqrt(N)); i++) {
-  if (!isPrimeNumber[i]) {
-    continue;
-  }
-
-  for (let j = i * 2; j <= N; j += i) {
-    isPrimeNumber[j] = false;
-  }
+for (let i = 2; i <= Math.sqrt(M); i++) {
+    if (!arr[i]) {
+        continue;
+    }
+    for (let j = i * 2; j <= M; j += i) {
+        arr[j] = false;
+    }
 }
 
-const results = [];
-
-for (let i = M; i <= N; i++) {
-  if (isPrimeNumber[i]) {
-    results.push(i);
-  }
+let result = [];
+for (let i = N; i <= M; i++) {
+    if (arr[i]) {
+        result.push(i);
+    }
 }
 
-console.log(results.join("\n"));
+console.log(result.join('\n').trim());

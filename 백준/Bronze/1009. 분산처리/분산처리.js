@@ -1,17 +1,17 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
+let [N,...arr]= require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+N= Number(N)
+arr = arr.map(a=>a.split(' ').map(Number))
 
-let N = input.shift();
-
-const result = input.map(v => {
-  const [a, b] = v.split(' ');  
-    
-  let pow = 1;
-
-  for (let j = 0; j < b; j++) {
-    pow = (pow * a) % 10;
+for(let [a,b] of arr){
+  let data = 1;
+  for(let i=1; i<=b; i++){
+    data = (data*a)%10
   }
-    
-  return pow === 0 ? 10 : pow;
-});  
-
-console.log(result.join("\n"));
+  if(data ===0){
+    console.log(10)
+  }
+  else{
+    console.log(data)
+  }
+  
+}

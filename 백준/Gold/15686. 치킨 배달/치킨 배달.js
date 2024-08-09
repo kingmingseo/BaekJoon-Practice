@@ -1,50 +1,46 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : 'input.txt';
-let input = fs.readFileSync(filePath).toString().trim().split('\n');
+let input = require('fs').readFileSync('dev/stdin').toString().split('\n')
 
-const [n, m] = input.shift().split(' ').map(Number);
-const city = input.map((line) => line.split(' ').map(Number));
-const house = [];
-const chicken = [];
+let [n,m] = input[0].split(' ').map(Number);
+let chicken =[]
+let house =[]
 
-for (let i = 0; i < n; i++) {
-  for (let j = 0; j < n; j++) {
-    if (city[i][j] === 1) house.push([i, j]);
-    else if (city[i][j] === 2) chicken.push([i, j]);
-  }
+for(let i =1; i<=n; i++){
+    let line = input[i].split(' ').map(Number);
+    for(j =0; j<n; j++){
+        if(line[j]===1) house.push([i,j])
+        if(line[j]===2) chicken.push([i,j])
+    }
 }
 
-const getMinDistance = () => {
-  let sum = 0;
-  house.forEach(([hx, hy]) => {
-    let min = Infinity;
-    chicken.forEach((_, index) => {
-      if (check[index] === true) {
-        const [cx, cy] = chicken[index];
-        min = Math.min(min, Math.abs(hx - cx) + Math.abs(hy - cy));
-      }
-    });
-    sum += min;
-  });
-  return sum;
-};
+let visited = new Array(chicken.length).fill(false);
+let selected = []
 
-const check = new Array(chicken.length).fill(false);
-let answer = Infinity;
+let answer = 1e9;
+dfs(0,0);
+console.log(answer)
 
-const DFS = (idx, cnt) => {
-  if (cnt === m) {
-    answer = Math.min(answer, getMinDistance());
-    return;
-  } else {
-    for (let i = idx; i < chicken.length; i++) {
-      if (check[i] === true) continue;
-      check[i] = true;
-      DFS(i, cnt + 1);
-      check[i] = false;
+function dfs(depth, start){
+    if(depth ===m){
+        let result = [];
+        for(let i of selected) result.push(chicken[i]);
+        let sum = 0;
+        for(let [hx,hy] of house){
+            let temp = 1e9;
+            for(let [cx,cy] of result){
+                temp = Math.min(temp, Math.abs(hx-cx)+Math.abs(hy-cy));
+            } 
+            sum+= temp;
+        }
+        answer = Math.min(answer,sum);
+        return;
     }
-  }
-};
 
-DFS(0, 0);
-console.log(answer);
+    for(let i = start; i<chicken.length; i++){
+        if(visited[i]) continue;
+        selected.push(i) 
+        visited[i] = true;
+        dfs(depth+1, i+1)
+        selected.pop()
+        visited[i] = false
+    }
+}

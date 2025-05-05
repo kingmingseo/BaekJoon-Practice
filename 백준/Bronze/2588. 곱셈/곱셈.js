@@ -1,11 +1,11 @@
-let input= require('fs').readFileSync('dev/stdin').toString().split('\n')
-let a = Number(input[0])
-let b = input[1]
-let answer = ''
+const input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n').map(line=>line.trim())
 
-for(let i = b.length-1; i>=0; i--){
-  answer += a * Number(b[i]) + '\n'
+const A = Number(input[0]);
+const B = input[1];
+
+for (let i=2; i>=0; i--){
+  console.log(A * Number(B[i]))
 }
-answer += a*Number(b)
-console.log(answer)
+
+console.log(A*Number(B))
 

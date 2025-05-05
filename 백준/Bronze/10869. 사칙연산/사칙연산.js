@@ -1,10 +1,7 @@
-let [a,b] = require('fs').readFileSync('dev/stdin').toString().split(' ')
+const input = require('fs').readFileSync('dev/stdin').toString().trim().split(' ')
 
-let answer = ''
-answer += Number(a)+Number(b)+'\n'
-answer += Number(a)-Number(b)+'\n'
-answer += Number(a)*Number(b)+'\n'
-answer += parseInt(Number(a)/Number(b))+'\n'
-answer += Number(a)%Number(b)
-
-console.log(answer)
+console.log(Number(input[0])+Number(input[1]))
+console.log(Number(input[0])-Number(input[1]))
+console.log(Number(input[0])*Number(input[1]))
+console.log(Math.floor(Number(input[0])/Number(input[1])))
+console.log(Number(input[0])%Number(input[1]))

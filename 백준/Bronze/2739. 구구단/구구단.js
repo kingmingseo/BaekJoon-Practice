@@ -1,8 +1,8 @@
-let input = require('fs').readFileSync('dev/stdin').toString();
-input = Number(input)
+const input = require('fs').readFileSync('dev/stdin').toString().trim()
+
 let answer = ''
-for(let i =1; i<=8; i++){
-  answer += input + ' * ' + i + ' = ' + input*i +'\n'
+for (let i = 1; i < 10; i++) {
+  answer += `${input} * ${i} = ${Number(input) * i}\n`
 }
-answer += input + ' * ' + 9 + ' = ' + input*9
-console.log(answer)
+
+console.log(answer.trim())

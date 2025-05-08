@@ -1,11 +1,9 @@
-let [n,...arr] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+const input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n').map(line => line.trim())
 
-arr = arr[0].split(' ').map(Number)
-let highScore = arr.reduce((a,b)=>Math.max(a,b))
-let sum = 0;
+const [a, b] = input.map(num => num.split(' ').map(str => Number(str)))
 
-for (let i =0; i<n; i++){
-  sum+=arr[i]/highScore*100
-}
+let maxScore = Math.max(...b)
 
-console.log(sum/n)
+let newScoreSum = b.reduce((a, b) =>  a + (b / maxScore * 100),0)
+
+console.log((newScoreSum / a))

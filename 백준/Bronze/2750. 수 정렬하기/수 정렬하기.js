@@ -1,22 +1,19 @@
-let [n, ...arr] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
-arr= arr.map(Number)
+const input = require('fs').readFileSync('/dev/stdin').toString().split('\n').filter(Boolean).map(Number);
 
 function selectionSort(arr){
-  for(i=0; i<arr.length; i++){
-    let minValue = 1001;
-    let minIndex = 0;
-    for(j=i; j<arr.length; j++){
-      if(minValue > arr[j]){
-        minValue = arr[j]
-        minIndex = j
+  for(let i = 0; i < arr.length; i++){
+    let minIndex = i;
+    for(let j = i + 1; j < arr.length; j++){
+      if(arr[j] < arr[minIndex]){
+        minIndex = j;
       }
     }
     let temp = arr[i];
-    arr[i] = minValue;
-    arr[minIndex] = temp; 
+    arr[i] = arr[minIndex];
+    arr[minIndex] = temp;
   }
-  return arr;
 }
 
-
-console.log(selectionSort(arr).join('\n'))
+const data = input.slice(1); // 첫 줄은 개수
+selectionSort(data);
+console.log(data.join('\n'));

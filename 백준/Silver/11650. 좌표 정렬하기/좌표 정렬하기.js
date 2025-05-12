@@ -1,24 +1,32 @@
-let [n, ...arr] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
+const input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n').map(line => line.split(' ').map(Number))
+let data = input.slice(1);
 
-data = [];
-for (let item of arr) {
-    let [x, y] = item.split(' ').map(Number);
-    data.push([x, y]);
-}
-
-function compare(a, b) {
-  if(a[0]!==b[0]){
-    return a[0]-b[0]
+function compare(arr1, arr2) {
+  if (arr1[0] < arr2[0]) {
+    return -1
   }
-  else{
-    return a[1]-b[1]
+  else if (arr1[0] > arr2[0]) {
+    return 1
+  }
+
+  else {
+    if (arr1[1] < arr2[1]) {
+      return -1
+    }
+    else if (arr1[1] > arr2[1]) {
+      return 1
+    }
+    else {
+      return 0
+    }
   }
 }
 
 data.sort(compare)
-answer = ''
-
-for(let item of data){
-  answer += item.join(' ')+'\n'
+let answer = ''
+for (let i = 0; i < data.length; i++) {
+  answer += data[i].join(' ')
+  answer += '\n'
 }
+
 console.log(answer.trim())

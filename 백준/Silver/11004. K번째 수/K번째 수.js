@@ -1,5 +1,7 @@
-let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
-let [n,m]=input[0].split(' ').map(Number)
-let arr = input[1].split(' ').map(Number).sort((a,b)=>a-b)[m-1]
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+let [N, K] = input[0].split(' ').map(Number)
+let A = input[1].split(' ').map(Number)
 
-console.log(arr)
+A = A.sort((a, b) => a - b)
+
+console.log(A[K-1])

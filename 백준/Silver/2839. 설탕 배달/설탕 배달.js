@@ -1,15 +1,24 @@
-let input = require('fs').readFileSync('dev/stdin').toString();
-input = Number(input);
+let input = require('fs').readFileSync('dev/stdin').toString().trim()
+let answer = 0
 
-let div5 = Math.floor(input / 5);
-let div3 = 0;
-while (div5 >= 0) {
-    let rest = input-(5*div5);
-    if (rest % 3 === 0) {
-        div3= Math.floor(rest/3);
-        break;
-    }
-    div5--
+while (input >= 3) {
+  if (input % 5 === 0) {
+    answer += Math.floor(input / 5)
+    input %= 5
+    break;
+  }
+  else {
+    input -= 3
+    answer += 1
+  }
+
+
+
 }
 
-console.log(div5+div3)
+if (input > 0) {
+  console.log(-1)
+}
+else {
+  console.log(answer)
+}

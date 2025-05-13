@@ -1,30 +1,26 @@
-let [A, B] = require('fs').readFileSync('dev/stdin').toString().split(' ').map(Number);
-let answer = 0
+let [A, B] = require('fs').readFileSync('dev/stdin').toString().split(' ').map(Number)
 
-while(B>=A){
+let answer = 1;
 
-    if(B===A){
-        break;
-    }
+while (B > A) {
+  let digitOne = B % 10
+  if (digitOne === 1) {
     B = String(B)
-    if(B.slice(B.length-1,B.length) === '1'){
-        answer += 1;
-        B = Number(String(B.slice(0,B.length-1)))
-    }
-    else{
-        B = Number(B)
-        if(B %2 !== 0 ){
-            answer = -1
-            break;
-        }
-        B = Math.floor(B/2)
-        answer +=1
-    }
+    B = Number(B.slice(0, B.length - 1))
+    answer += 1
+  }
+  else if (B % 2 === 0) {
+    B = Number(B / 2)
+    answer += 1
+  }
+  else {
+    break
+  }
+}
 
+if (B !== A) {
+  console.log(-1)
 }
-if(B !== A){
-    console.log(-1)
-}
-else{
-    console.log(answer+1)
+else {
+  console.log(answer)
 }

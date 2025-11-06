@@ -1,27 +1,30 @@
-let [a, ...b] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
-let answer = a;
-for (let i = 0; i < a; i++) {
-    let alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    let temp = b[i].replace('\r', '');
-    let beforeWord = '';
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+let ans = 0
 
-    for (let item of temp) {
-        //처음 맞이하는단어
+for (let i = 1; i < input.length; i++) {
+    let alreadyWord = []
+    let prevWord = ''
+    let flag = false
 
-        if (alphabet.indexOf(item) > -1) {
-            alphabet = alphabet.slice(0, alphabet.indexOf(item)) + alphabet.slice(alphabet.indexOf(item) + 1);
-        }
-        //연속된 단어
-        else if (beforeWord === item) {
-            continue;
-        }
+    for (let j = 0; j < input[i].length; j++) {
+        let nowWord = input[i][j]
 
-        //아까 나왔던 단어이면서 연속되지않은단어
-        else if (alphabet.indexOf(item) === -1 && item !== beforeWord) {
-            answer -= 1;
-            break;
+        if(prevWord === nowWord) continue //이전 단어랑 같은 단어인 경우
+
+        if (alreadyWord.includes(nowWord)) { //이미 나온 단어가 또 나온경우
+            flag = true
+            break
         }
-        beforeWord = item;
+        if (prevWord !== nowWord) { //이전단어랑 지금 단어랑 다른 경우
+            alreadyWord.push(nowWord)
+        }
+        prevWord = nowWord
+    }
+
+    if(flag===false){
+        ans+=1
     }
 }
-console.log(answer);
+
+console.log(ans)
+

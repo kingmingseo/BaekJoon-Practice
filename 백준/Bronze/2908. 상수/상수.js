@@ -1,7 +1,6 @@
-let [a,b] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ')
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split(' ')
 
-a = a.split('').reverse().join('')
-b = b.split('').reverse().join('')
+let A = Number(input[0].split('').reverse().join(''))
+let B = Number(input[1].split('').reverse().join(''))
 
-console.log(Math.max(a,b))
-
+console.log(Math.max(A,B))

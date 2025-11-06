@@ -1,5 +1,7 @@
-let [a,b] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+let [N, data] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
 
-b = b.split('').map(Number).reduce((a,b)=>a+b,0)
+data = data.split('').map(Number)
 
-console.log(b)
+console.log(data.reduce((acc, cur) => {
+    return acc + cur
+}, 0))

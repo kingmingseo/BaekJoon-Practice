@@ -1,11 +1,18 @@
-let [N,P] = require('fs').readFileSync('dev/stdin').toString().split('\n')
-P = P.split(' ').map(Number).sort((a,b)=>a-b)
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+let data = input[1].split(' ').map(Number)
 
-let waitTime = 0
-let answer = 0
-for(let i =0; i<P.length; i++){
-  waitTime += P[i]
-  answer += waitTime
+function compare(a, b) {
+    return a - b
 }
 
-console.log(answer)
+data.sort(compare)
+
+let ans = 0
+let temp = 0
+for (let i = 0; i < data.length; i++) {
+    temp += data[i]
+    ans += temp
+
+}
+
+console.log(ans)

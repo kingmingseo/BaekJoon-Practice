@@ -1,11 +1,11 @@
-let input = require('fs').readFileSync('dev/stdin').toString()
-input = Number(input)
-answer = 0
-let i = 1;
-while(input >= 0){
-  input -= i;
-  answer +=1
-  i+=1 
+let input = Number(require('fs').readFileSync('dev/stdin').toString().trim())
+let n = 0;
+let nowNum = 1
+cnt = 0;
+while (n <= input) {
+    n += nowNum++
+    cnt++
+    
 }
-console.log(answer-1)
 
+console.log(cnt-1)

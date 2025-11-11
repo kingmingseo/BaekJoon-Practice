@@ -1,7 +1,10 @@
 let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
-let [N, K] = input[0].split(' ').map(Number)
-let A = input[1].split(' ').map(Number)
+let K = input[0].split(' ').map(Number)[1]
+let data = input[1].split(' ').map(Number)
 
-A = A.sort((a, b) => a - b)
+function compare(a, b) {
+    return a - b
+}
 
-console.log(A[K-1])
+data.sort(compare)
+console.log(data[K-1])

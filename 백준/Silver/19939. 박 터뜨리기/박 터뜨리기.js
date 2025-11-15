@@ -1,15 +1,22 @@
-let [N, K] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ').map(Number);
+let [N, K] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ').map(Number)
+let basket = []
 
-let sum = K*(K+1)/2
-
-if(sum>N){
-  console.log(-1)
+let total = 0
+for(let i=1; i<=K; i++){
+    total +=i
 }
+
+if(total > N){
+    console.log(-1)
+}
+
 else{
-  N = N-sum;
-  if(N % K === 0) console.log(K-1);
-  else console.log(K);
+    if((N-total)%K ===0){
+        console.log(K-1)
+    }
+    else{
+        console.log(K)
+    }
 }
-
 
 

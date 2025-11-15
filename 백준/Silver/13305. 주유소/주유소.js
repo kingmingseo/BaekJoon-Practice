@@ -1,15 +1,16 @@
-let [N, ...arr] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
-let distance = arr[0].split(' ').map(BigInt);
-let cityOilFee = arr[1].split(' ').map(BigInt);
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
+let N = Number(input[0]);
+let distance = input[1].split(' ').map(BigInt);
+let gasStation = input[2].split(' ').map(BigInt);
 
-let answer = BigInt(0);
-let minPrice = cityOilFee[0];
+let totalCost = 0n;
+let minPrice = gasStation[0];
 
-for (let i = 0; i < distance.length; i++) {
-    if (cityOilFee[i] < minPrice) {
-        minPrice = cityOilFee[i];
-    }
-    answer += minPrice * distance[i];
+for (let i = 0; i < N - 1; i++) {
+  if (gasStation[i] < minPrice) {
+    minPrice = gasStation[i];
+  }
+  totalCost += minPrice * distance[i];
 }
 
-console.log(answer.toString());
+console.log(totalCost.toString());

@@ -1,32 +1,33 @@
-let [N, arr] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
-N = Number(N);
-arr = arr.split(' ').map(Number);
-arr = arr.reverse();
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+let N = Number(input[0])
+let data = input[1].split(' ').map(Number)
+data.reverse()
 
-let data = [0];
-function getLowerBound(arr, start, end, target) {
-    let result = 0;
-    while (start <= end) {
-        let mid = Math.floor((start + end) / 2);
+function lowerBound(arr, start, end, target) {
+    while (start < end) {
+        let mid = Math.floor((start + end) / 2)
+
         if (arr[mid] < target) {
-            result = mid;
-            start = mid + 1;
-        } else {
-            end = mid - 1;
+            start = mid + 1
+        }
+        else {
+            end = mid
         }
     }
-    return result;
+    return start
 }
 
+let ans = [0]
 
-for (let i = 0; i < arr.length; i++) {
-    let upperBound = getLowerBound(data, 0, data.length -1, arr[i]);
-    if (data[upperBound] > data[data.length - 1]) {
-        data.push(arr[i]);
-    } else {
-        data[upperBound+1] = arr[i];
+for (let item of data) {
+
+    if (ans[ans.length - 1] < item) {
+        ans.push(item)
     }
-
+    else {
+        ans[lowerBound(ans, 0, ans.length, item)] = item
+    }
 }
 
-console.log(arr.length - (data.length -1))
+console.log(N - (ans.length - 1))
+

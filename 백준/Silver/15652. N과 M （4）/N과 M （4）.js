@@ -1,20 +1,20 @@
-let [N,M] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ').map(Number);
-let selected = [];
-let answer = ''
-
-function dfs(depth,start){
-  if(depth===M){
-    for(let item of selected){
-      answer += `${item} `
+let [N, M] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ').map(Number)
+let ans = ''
+function dfs(result, depth) {
+    if (depth === M) {
+        ans += result.join(' ')
+        ans += '\n'
+        return
     }
-    answer += '\n'
-    return
-  }
-  for(let i=start; i<=N; i++){
-    selected.push(i);
-    dfs(depth+1,i)
-    selected.pop(i);
-  }
+
+    for (let i = 1; i <= N; i++) {
+        if (result[result.length - 1] > i) continue
+
+        result.push(i)
+        dfs(result, depth + 1)
+        result.pop()
+    }
 }
-dfs(0,1)
-console.log(answer)
+
+dfs([], 0)
+console.log(ans.trim())

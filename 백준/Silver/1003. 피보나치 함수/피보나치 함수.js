@@ -1,34 +1,15 @@
-let input = require('fs')
-    .readFileSync('dev/stdin')
-    .toString()
-    .trim()
-    .split('\n')
-    .map((a) => Number(a));
+let [N, ...arr] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+N = Number(N)
+arr = arr.map(Number)
+let maxDptableIndex = Math.max(...arr)
+let dpTable = Array(0).fill(40)
+dpTable[0] = [1, 0]
+dpTable[1] = [0, 1]
 
-    
-function fibo(n) {
-    if (n === 0) {
-        return 0;
-    }
-    if (n === 1) {
-        return 1;
-    } else if (fiboAnsTable[n] !== 0) {
-        return fiboAnsTable[n];
-    }
-
-    fiboAnsTable[n] = fibo(n - 2) + fibo(n - 1);
-    return fiboAnsTable[n];
+for (let i = 2; i <= maxDptableIndex; i++) {
+    dpTable[i] = [dpTable[i - 2][0] + dpTable[i - 1][0], dpTable[i - 2][1] + dpTable[i - 1][1]]
 }
 
-for (let i = 1; i < input.length; i++) {
-    fiboAnsTable = new Array(41).fill(0);
-    fiboAnsTable[0] = 0
-    fiboAnsTable[1] = 1
-    
-    fibo(input[i], 0);
-    if (input[i] !== 0) {
-        console.log(fiboAnsTable[input[i] - 1], fiboAnsTable[input[i]]);
-    } else {
-        console.log('1 0');
-    }
+for (let item of arr) {
+    console.log(dpTable[item].join(' '))
 }

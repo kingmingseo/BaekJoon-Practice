@@ -1,28 +1,46 @@
-const fs = require('fs');
-const input = fs.readFileSync('/dev/stdin').toString().split('\n');
-const [n, m] = input[0].split(' ').map(Number); // 노드의 개수(N), 쿼리의 개수(M)
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+input = input.map(data => data.replace('\r', '').split(' ').map(Number))
+let [N, M] = input[0]
 
-// 트리 정보 입력받기
-const graph = Array.from({ length: n + 1 }, () => []);
-for (let i = 1; i < n; i++) {
-    const [x, y, cost] = input[i].split(' ').map(Number);
-    graph[x].push([y, cost]);
-    graph[y].push([x, cost]);
+let graph = Array.from({ length: N + 1 }, () => [])
+let distance = Array.from({ length: N + 1 }, () => Array(N + 1).fill(0))
+var visited
+var result
+
+//그래프 만들기 
+for (let i = 1; i < N; i++) {
+    let startNode = input[i][0]
+    let endNode = input[i][1]
+    let dist = input[i][2]
+
+    graph[startNode].push(endNode)
+    graph[endNode].push(startNode)
+    distance[startNode][endNode] = dist
+    distance[endNode][startNode] = dist
 }
 
-function dfs(x, dist) {
-    if (visited[x]) return; // 각 노드는 한 번만 방문
-    visited[x] = true; // 방문 처리
-    distance[x] = dist;
-    for (const [y, cost] of graph[x]) {
-        dfs(y, dist + cost);
+function dfs(startNode, destination, result, length) {
+    if (destination === startNode) {
+        result.push(length)
+        return
+    }
+
+    for (let nextNode of graph[startNode]) {
+        if (visited[nextNode]) continue
+        visited[nextNode] = true
+        length = length + distance[startNode][nextNode]
+        dfs(nextNode, destination, result, length)
+        length = length - distance[startNode][nextNode]
     }
 }
 
-for (let i = 0; i < m; i++) {
-    const [x, y] = input[n + i].split(' ').map(Number);
-    visited = new Array(n + 1).fill(false);
-    distance = new Array(n + 1).fill(-1);
-    dfs(x, 0); // 노드 X에서 출발했을 때의 모든 노드까지의 거리 계산
-    console.log(distance[y]); // Y까지의 최단 거리 출력
+
+for (let i = N; i < N + M; i++) {
+    let startNode = input[i][0]
+    let destination = input[i][1]
+    visited = Array(N + 1).fill(false)
+    visited[startNode] = true
+    result = []
+    dfs(startNode, destination, result, 0)
+    console.log(Number(result[0]))
 }

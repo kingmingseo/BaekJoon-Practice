@@ -1,37 +1,44 @@
-let [n, ...arr] = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
-n = Number(n);
-arr = arr.map((a) => a.split('').map(Number));
-let answer = [];
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+input = input.map(data => data.replace('\r', ''))
+let N = Number(input[0])
+let data = input.slice(1)
 
-function dfs(x, y) {
-    if (x >= arr.length || x < 0 || y >= arr[0].length || y < 0) {
-        return;
+let dx = [1, -1, 0, 0]
+let dy = [0, 0, 1, -1]
+let visited = Array.from({ length: N }, () => Array(N).fill(false))
+
+function dfs(ans, x, y) {
+    for (let i = 0; i < 4; i++) {
+        let nextX = x + dx[i]
+        let nextY = y + dy[i]
+        if (nextX >= N || nextY >= N || nextX < 0 || nextY < 0) continue
+        if (data[nextX][nextY] === '0') continue
+        if (visited[nextX][nextY]) continue
+
+        visited[nextX][nextY] = true;
+        ans.push([nextX, nextY])
+        dfs(ans, nextX, nextY)
     }
 
-    if (arr[x][y] === 1) {
-        aptCount += 1;
-        arr[x][y] = -1;
 
-        // 상하 좌우를 살피는 코드
-        dfs(x + 1, y);
-        dfs(x - 1, y);
-        dfs(x, y + 1);
-        dfs(x, y - 1);
+}
+
+let final = []
+for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+
+        if (data[i][j] === '0') continue
+        if (visited[i][j]) continue
+        visited[i][j] = true;
+        var ans = [[i, j]]
+        dfs(ans, i, j)
+        final.push(ans.length)
     }
 }
 
-for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
-        if (arr[i][j] === 1) {
-            // 단지 개수를 세는 코드
-            aptCount = 0;
-            dfs(i, j);
-            answer.push(aptCount);
-        }
-    }
+function compare(a, b) {
+    return a - b
 }
-console.log(answer.length);
-answer.sort((a,b)=>a-b)
-for(let item of answer){
-  console.log(item)
-}
+console.log(final.length)
+console.log(final.sort(compare).join('\n'))
+

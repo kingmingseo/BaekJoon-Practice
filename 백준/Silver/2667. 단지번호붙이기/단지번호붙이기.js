@@ -7,7 +7,8 @@ let dx = [1, -1, 0, 0]
 let dy = [0, 0, 1, -1]
 let visited = Array.from({ length: N }, () => Array(N).fill(false))
 
-function dfs(ans, x, y) {
+function dfs(x, y) {
+    let count = 1
     for (let i = 0; i < 4; i++) {
         let nextX = x + dx[i]
         let nextY = y + dy[i]
@@ -16,10 +17,10 @@ function dfs(ans, x, y) {
         if (visited[nextX][nextY]) continue
 
         visited[nextX][nextY] = true;
-        ans.push([nextX, nextY])
-        dfs(ans, nextX, nextY)
+        count += dfs(nextX, nextY)
     }
 
+    return count
 
 }
 
@@ -31,8 +32,7 @@ for (let i = 0; i < N; i++) {
         if (visited[i][j]) continue
         visited[i][j] = true;
         var ans = [[i, j]]
-        dfs(ans, i, j)
-        final.push(ans.length)
+        final.push(dfs(i, j))
     }
 }
 

@@ -1,36 +1,40 @@
-let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n');
+let index = require('fs').readFileSync('dev/stdin').toString().trim().split('\n').map(Number)
+let data = index.slice(1)
+let N = index[0]
+// 방향 그래프를 만들기
 
-let n = Number(input[0]);
-let graph = [0];
-for (let i = 1; i <= n; i++) {
-    graph.push(Number(input[i]));
+let graph = Array.from({ length: N + 1 }, () => [])
+
+for (let i = 0; i < N; i++) {
+    graph[i + 1].push(data[i])
 }
 
-let visited = new Array(n + 1).fill(false);
-let finished = new Array(n + 1).fill(false);
-let result = [];
 
-for (let x = 1; x <= n; x++) {
-  if(!visited[x]) isCycle(x,graph,visited,finished,result);
-
-}
-
-console.log(result.length);
-result.sort((a,b)=>a-b);
-for(let x of result){
-  console.log(x)
-}
-function isCycle(x, graph, visited, finished, result) {
-    visited[x] = true;
-    let y = graph[x]; //다음노드
-    if (!visited[y]) {
-        isCycle(y, graph, visited, finished, result);
-    } else if (!finished[y]) {
-        while (y != x) {
-            result.push(y);
-            y = graph[y];
-        }
-        result.push(x);
+var ans = []
+function dfs(start, nowNode, visited) {
+    let nextNode = graph[nowNode][0]
+    if (!visited[nextNode]) {
+        visited[nextNode] = true
+        dfs(start, nextNode, visited)
     }
-    finished[x] = true;
+    else if (start === nextNode){
+        ans.push(start)
+    }
+
 }
+
+
+for (let i = 1; i <= N; i++) {
+    let visited = Array(N + 1).fill(false)
+    visited[i] = true
+    dfs(i, i, visited)
+}
+
+function compare(a, b) {
+    return a - b
+}
+
+ans.sort(compare)
+console.log(ans.length)
+console.log(ans.join('\n'))
+

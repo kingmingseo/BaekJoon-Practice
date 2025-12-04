@@ -1,32 +1,56 @@
-let [N, K] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ')
-N = Number(N)
-K = Number(K)
+let [start, target] = require('fs').readFileSync('dev/stdin').toString().trim().split(' ').map(Number)
 
-let visited = Array(100001).fill(false)
-let queue = []
+class Queue {
+    constructor() {
+        this.headIndex = 0
+        this.tailIndex = 0
+        this.items = {}
+    }
+
+    enqueue(item) {
+        this.items[this.tailIndex] = item
+        this.tailIndex++
+    }
+
+    dequeue() {
+        const item = this.items[this.headIndex]
+        delete this.items[this.headIndex]
+        this.headIndex++
+        return item
+    }
+    peek() {
+        return this.items[this.headIndex]
+    }
+    getLength() {
+        return this.tailIndex - this.headIndex
+    }
+}
+
 
 function bfs(start, target) {
-    queue.push([start, 0])
-    visited[start] = true
+    let queue = new Queue()
+    let visitied = Array(100001).fill(false)
+    queue.enqueue([start, 0])
+    visitied[start] = true
 
-    while (queue.length !== 0) {
-        let [now, dist] = queue.shift()
+    while (queue.getLength() !== 0) {
+        let [nowNum, count] = queue.dequeue()
+        if (nowNum === target) return count
+        if (nowNum < 0 || nowNum > 100000) continue
+        let nextList = [nowNum + 1, nowNum - 1, nowNum * 2]
 
-        if (now === target) {
-            return dist
-        }
-
-        let nextPosition = [now + 1, now - 1, now * 2]
-
-        for (let next of nextPosition) {
-            if (next >= 0 && next <= 100000 && visited[next] === false) {
-                queue.push([next, dist + 1])
-                visited[next] = true
+        for (let nextNode of nextList) {
+            if (visitied[nextNode]) {
+                continue
             }
-
+            visitied[nextNode] = true
+            queue.enqueue([nextNode, count + 1])
         }
 
     }
 }
 
-console.log(bfs(N, K))
+
+
+console.log(bfs(start, target))
+

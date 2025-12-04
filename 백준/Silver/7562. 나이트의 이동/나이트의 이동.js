@@ -1,75 +1,68 @@
-let input = require('fs')
-    .readFileSync('dev/stdin')
-    .toString()
-    .trim()
-    .split('\n')
-    .map((data) => data.split(' ').map(Number));
+let input = require('fs').readFileSync('dev/stdin').toString().trim().split('\n')
+input = input.map(data => data.replace('\r', '').split(' ').map(Number))
+let testCase = input.slice(1)
+let nowRow = 0
 
 class Queue {
     constructor() {
-        this.items = {};
-        this.headIndex = 0;
-        this.tailIndex = 0;
+        this.tailIndex = 0
+        this.headIndex = 0
+        this.items = {}
     }
 
     enqueue(item) {
-        this.items[this.tailIndex] = item;
-        this.tailIndex++;
+        this.items[this.tailIndex] = item
+        this.tailIndex++
     }
 
     dequeue() {
-        const deleteItem = this.items[this.headIndex];
-        delete this.items[this.headIndex];
-        this.headIndex++;
-        return deleteItem;
+        const item = this.items[this.headIndex]
+        delete this.items[this.headIndex]
+        this.headIndex++
+        return item
     }
 
     getLength() {
-        return this.tailIndex - this.headIndex;
+        return this.tailIndex - this.headIndex
     }
 }
 
-let totalTestCase = input.shift();
-let line = 0;
-let dx = [1, 1, -1, -1, 2, 2, -2, -2];
-let dy = [2, -2, 2, -2, 1, -1, 1, -1];
-while (line < input.length) {
-    l = input[line++];
-    let [startRow, startCol] = input[line++];
-    [goalRow, goalCol] = input[line++];
-    let visited = [];
-    for (let i = 0; i < l; i++) {
-        visited.push(new Array(l[0]).fill(false));
-    }
-    let answer = bfs(visited, startRow, startCol);
-    console.log(answer);
+
+
+while (nowRow < testCase.length) {
+    let i = testCase[nowRow][0]
+    nowRow++
+    let [startX, startY] = testCase[nowRow]
+    nowRow++
+    let [goalX, goalY] = testCase[nowRow]
+    nowRow++
+
+    console.log(bfs(startX, startY, goalX, goalY, i))
+
+
 }
 
-function bfs(visited, row, col) {
-    let queue = new Queue();
-    visited[row][col] = true;
-    queue.enqueue([row, col, 0]);
-    let answer = 0;
-    while (queue.getLength !== 0 ) {
-        let [row, col, count] = queue.dequeue();
 
-        if (goalRow === row && goalCol === col) {
-            answer = count;
-            break;
-        }
+function bfs(x, y, targetX, targetY, i) {
+    if(x===targetX && y===targetY) return 0
+    let visited = Array.from({ length: i }, () => Array(i).fill(false))
 
-        count += 1;
-        for (let i = 0; i < 8; i++) {
-            let nextRow = row + dx[i];
-            let nextCol = col + dy[i];
+    let queue = new Queue()
 
-            //체스판 안에 들어오고 방문을 하지 않은 경우
-            if (nextRow >= 0 && nextRow < l && nextCol >= 0 && nextCol < l && !visited[nextRow][nextCol]) {
-                visited[nextRow][nextCol] = true;
-                queue.enqueue([nextRow, nextCol, count]);
-            }
+    queue.enqueue([x, y, 0])
+    visited[x][y] = true
+
+    while (queue.getLength() > 0) {
+        let [nowX, nowY, count] = queue.dequeue()
+        let canGoPosition = [[nowX + 2, nowY + 1], [nowX + 2, nowY - 1], [nowX + 1, nowY + 2], [nowX + 1, nowY - 2], [nowX - 1, nowY - 2], [nowX - 1, nowY + 2], [nowX - 2, nowY - 1], [nowX - 2, nowY + 1]]
+        for (let [nextX, nextY] of canGoPosition) {
+            if (nextX === targetX && nextY === targetY) return count + 1
+            if (nextX < 0 || nextY < 0 || nextX >= i || nextY >= i) continue
+            if (visited[nextX][nextY]) continue
+
+            queue.enqueue([nextX, nextY, count + 1])
+            visited[nextX][nextY] = true
         }
     }
 
-    return answer;
 }

@@ -1,0 +1,8 @@
+-- 코드를 입력하세요
+# 식품공장 ID, 공장이름, 주소 
+# 공장 ID기준 오름차순
+
+SELECT F.FACTORY_ID, F.FACTORY_NAME, F.ADDRESS
+FROM FOOD_FACTORY F 
+WHERE F.ADDRESS LIKE '강원도%' 
+ORDER BY F.FACTORY_ID 
